@@ -28,8 +28,10 @@ const selectors = {
 selectors.start.disabled = true;
 const calendar = flatpickr('#datetime-picker', selectors.options);
 function onStart() {
+  selectors.start.disabled = true;
   let id = null;
-  id = setInterval((selectedDate) => {
+  console.log(ms);
+  id = setInterval(() => {
     ms -=1000;
     convertMs(ms);
     addLeadingZero(value);
@@ -37,6 +39,7 @@ function onStart() {
     let isEnded = formatedTime.every(time => time === '00');
     if(isEnded){
       clearInterval(id);
+      selectors.start.disabled = false;
       Notify.info('timer has ended:)')
     }
   }, 1000)
