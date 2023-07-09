@@ -12,25 +12,23 @@ const selectors = {
       const currentDate = selectors.options.defaultDate.getTime();
       if (selectedDate > currentDate) {
         selectors.start.disabled = false;
-        ms = selectedDate - currentDate;
-        return ms
       } else {
         selectors.start.disabled = true;
         Notify.failure('Please choose a date in the future');
       }
-  
+      return selectedDate - currentDate
     },
   },
   start: document.querySelector('button[data-start]'),
   timeValues: document.querySelectorAll('.value'),
 };
-
 selectors.start.disabled = true;
 const calendar = flatpickr('#datetime-picker', selectors.options);
+
 function onStart() {
+  let ms = selectors.options.onClose();
   selectors.start.disabled = true;
   let id = null;
-  console.log(ms);
   id = setInterval(() => {
     ms -=1000;
     convertMs(ms);

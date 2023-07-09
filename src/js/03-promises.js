@@ -6,46 +6,36 @@ const selectors = {
   amountInput: form.amount,
   createBtn: document.querySelector('.form button'),
 };
-console.log(selectors.createBtn);
-
 const handlerSubmit = function (evt) {
   evt.preventDefault()
-  let position = 0;
+  let delay = Number(selectors.delayInput.value);
   let step = Number(selectors.stepInput.value);
   let amount = Number(selectors.amountInput.value);
-  let delay = Number(selectors.delayInput.value);
-  let timeStep = -step;
-  let timeId = null;
-  setInterval(() => {
-    position +=1;
-    timeId = setTimeout(() => {
-      if(position > 1){
+    for(let pos = 1; pos <= amount; pos +=1){
+      if(pos > 1){
         delay += step;
-      }
-      createPromise(position, delay)
-    .then(({ position, delay }) => {
-      Notify.success(`✅ Fulfilled promise ${position} in ${delay}ms`);
-    })
-    .catch(({ position, delay }) => {
-      Notify.failure(`❌ Rejected promise ${position} in ${delay}ms`);
-    });
-    }, step)
-    if(position > amount){
-      clearTimeout(timeId);
-    } 
-  
-  }, delay);
+      };
+      createPromise(pos, delay)
+    }
 };
 form.addEventListener('submit', handlerSubmit);
 
-function createPromise(position, delay) {
+function createPromise(pos, delay) {
+ setTimeout(() => {
   const shouldResolve = Math.random() > 0.3;
   const promise = new Promise((resolve, reject) => {
     if (shouldResolve) {
-      resolve({ position, delay });
+      resolve({ pos, delay });
     } else {
-      reject({ position, delay });
+      reject({ pos, delay });
     }
   });
-  return promise;
+  promise.then(({ pos, delay }) => {
+    Notify.success(`✅ Fulfilled promise ${pos} in ${delay}ms`);
+  })
+  .catch(({ pos, delay }) => {
+    Notify.failure(`❌ Rejected promise ${pos} in ${delay}ms`);
+  });
+;
+ }, delay)
 }
