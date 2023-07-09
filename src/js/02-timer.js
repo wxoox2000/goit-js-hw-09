@@ -76,7 +76,7 @@ function addLeadingZero(value){
 };
 
 function markup(formatedTime){
-  for(i = 0; i < formatedTime.length; i +=1){
+  for(let i = 0; i < formatedTime.length; i +=1){
     selectors.timeValues[i].textContent = formatedTime[i];
   }
 }
